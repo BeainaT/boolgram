@@ -1,6 +1,6 @@
 <template>
     <div class="search_bar text-center">
-        <input type="text" placeholder="cerca">
+        <input type="text" placeholder="Cerca">
     </div>
 </template>
 
@@ -13,6 +13,10 @@ export default {
 <style lang="scss">
     .search_bar {
         flex-grow: 1;
+        input {
+            text-align: center;
+            border: 1px solid #cecece;
+        }
     }
 
 </style>

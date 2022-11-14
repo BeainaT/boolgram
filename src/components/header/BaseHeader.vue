@@ -1,9 +1,11 @@
 <template>
-    <div class="container d-flex">
-        <LogoApp/>
-        <SearchBar/>
-        <NavBar/>
-    </div>
+    <header>
+        <div class="container header_container py-2">
+            <LogoApp/>
+            <SearchBar/>
+            <NavBar/>
+        </div>
+    </header>
 </template>
 
 <script>
@@ -16,3 +18,14 @@ import SearchBar from './SearchBar.vue';
     components: { LogoApp, SearchBar, NavBar }
 }
 </script>
+<style lang="scss" scoped>
+header {
+    border-bottom: 1px solid #dedede;        
+    .header_container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+}
+</style>
