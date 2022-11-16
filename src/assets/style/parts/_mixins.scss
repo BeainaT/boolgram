@@ -1,0 +1,6 @@
+@mixin border-rainbow {
+    border: 3px solid transparent;
+    background-image: linear-gradient(#fff, #fff),radial-gradient(circle at bottom left, #eeff00,#ad00b9);
+    background-origin: border-box;
+    background-clip: content-box, border-box;
+}

@@ -1,5 +1,5 @@
 <template>
-    <main class="container d-flex py-3">
+    <main class="container d-flex justify-content-between py-4 px-5">
         <LeftMain/>
         <RightMain/>
     </main>
@@ -13,6 +13,3 @@ export default {
 }
 
 </script>
-
-<style>
-</style>

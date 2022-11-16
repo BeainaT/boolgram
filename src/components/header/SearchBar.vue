@@ -1,6 +1,6 @@
 <template>
     <div class="search_bar text-center">
-        <input type="text" placeholder="Cerca">
+        <input class="rounded" type="text" placeholder="Cerca">
     </div>
 </template>
 

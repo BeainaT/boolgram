@@ -1,65 +1,90 @@
 <template>
-    <div class="container right_main">
-        <div class="user user_profile d-flex">
-            <img src="../../assets/img/profile.jpg" alt="">
+    <div class="right_main">
+        <div class="user d-flex">
+            <img class="rounded-circle" src="../../assets/img/profile.jpg" alt="">
             <div class="user_info">
-                <h6>mariorossi</h6>
+                <h6>Mario Rossi</h6>
                 <p>mariorossi</p>
             </div>
-            <a href="#" class="text-primary">Passa a</a>
+            <button class="btn">Passa a</button>
         </div>
-        <div class="suggested d-flex py-2">
-            <p>Suggerimenti per te</p>
-            <button class="btn p-0">Mostra tutti</button>
+        <div class="suggested d-flex py-4">
+            <p class="suggested_p">Suggerimenti per te</p>
+            <button class="btn suggested_btn">Mostra tutti</button>
         </div>
-        <div class="user suggested_user d-flex">
-            <img src="../../assets/img/profile.jpg" alt="">
-            <div class="user_info">
-                <h6>mariorossi</h6>
-                <p>mariorossi</p>
-            </div>
-            <a href="#">Segui</a>
-        </div>
-    <BaseFooter/>
+        <SuggestedUsers v-for="user in users" :key="user.id" :users="user" />
+        <BaseFooter />
     </div>
 </template>
 <script>
+import SuggestedUsers from '../commons/SuggestedUsers.vue'
 import BaseFooter from '../footer/BaseFooter.vue'
+import axios from 'axios';
 export default {
-  components: { BaseFooter },
-    name: 'RightMain'
+    components: { BaseFooter, SuggestedUsers },
+    name: 'RightMain',
+    data() {
+        return {
+            users: null
+        }
+    },
+    methods: {
+        apiCall() {
+            axios.get('https://flynn.boolean.careers/exercises/api/boolgram/posts')
+                .then((res) => this.users = res.data)
+                .catch((e) => console.log(e))
+        }
+    },
+    mounted() {
+        setTimeout(this.apiCall, 2000)
+    }
 }
 </script>
 <style lang="scss" scoped>
-    .right_main {
-        p, h6 {
-            margin: 0;
-        }
-        padding: 1.25rem;
-        width: 40%;
-        .suggested {
-            align-items: center;
-            justify-content: space-between;
-        }
-        .user_profile img {
-            width: 3.75rem;
-            height: 3.75rem;
-            // width: 100%;
-        }
-        .suggested_user img {
-            width: 2.5rem;
-            height: 2.5rem;
-        }
-        .user_profile img,
-        .suggested_user img {
-            border-radius: 50%;
-            margin-right: .9375rem;
-        }
+.right_main {
+    padding: 1.25rem 0;
+    width: 40%;
+
+    button {
+        font-size: .875rem;
+    }
+
     .user {
         align-items: center;
+
+        & img {
+            width: 3.125rem;
+            height: 3.125rem;
+            margin-right: .9375rem;
+        }
+
+        &_info {
+            flex-grow: 1;
+            font-size: 1.125rem;
+
+            & p {
+                color: var(--bs-gray-600)
+            }
+
+            &>* {
+                margin: 0
+            }
+        }
     }
-    .user_info {
-        flex-grow: 1;
+
+    .suggested {
+        align-items: center;
+        justify-content: space-between;
+
+        &_p {
+            color: var(--bs-gray-600);
+            font-weight: 600;
+            margin: 0
+        }
+
+        &_btn {
+            color: var(--bs-gray-900)
+        }
     }
-    }
+}
 </style>

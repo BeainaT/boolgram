@@ -1,6 +1,6 @@
 <template>
-    <header>
-        <div class="container header_container py-2">
+    <header class="bg-white">
+        <div class="container header_container py-2 px-5">
             <LogoApp/>
             <SearchBar/>
             <NavBar/>
@@ -20,7 +20,7 @@ import SearchBar from './SearchBar.vue';
 </script>
 <style lang="scss" scoped>
 header {
-    border-bottom: 1px solid #dedede;        
+    border-bottom: 1px solid var(--bs-gray-300);        
     .header_container {
         display: flex;
         justify-content: space-between;
