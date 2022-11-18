@@ -21,6 +21,12 @@ input {
 }
 i {
     font-size: 1.875rem;
+    &:hover {
+        cursor: pointer;
+    }
+    &.fa-heart.liked {
+        color: var(--bs-danger);
+    }
 }
 button.btn {
     font-weight: 600;
@@ -30,4 +36,7 @@ button.btn {
 section.footer {
     color: var(--bs-gray-400);
     text-transform: uppercase;
+    a:hover {
+        color: inherit
+    }
 }

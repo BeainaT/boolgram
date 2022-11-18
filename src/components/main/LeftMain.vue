@@ -4,10 +4,10 @@
             <img src="../../assets/img/spinner.gif" alt="spinner">
         </div>
         <section class="stories rounded bg-white" :class="isLoaded ? 'skeleton_shadows' : ''">
-            <StoriesBlock v-for="profile in profiles" :key="profile.id" :profiles="profile" />
+            <StoriesBlock v-for="profile in profiles" :key="profile.id" :profiles="profile"/>
         </section>
         <section class="posts_card" :class="isLoaded ? 'skeleton_shadows' : ''">
-            <PostBlock v-for="post in posts" :key="post.id" :posts="post" />
+            <PostBlock v-for="post in searchUser" :key="post.id" :posts="post" />
         </section>
     </section>
 </template>
@@ -16,14 +16,17 @@
 import StoriesBlock from '../commons/StoriesBlock.vue';
 import PostBlock from '../commons/PostBlock.vue';
 import axios from 'axios';
+import { EventBus } from '@/main';
 export default {
     name: "LeftMain",
     components: { StoriesBlock, PostBlock },
     data() {
         return {
-            posts: null,
+            posts: [],
             profiles: null,
-            isLoaded: true
+            isLoaded: true,
+            searched: '',
+            owner: {}
         }
     },
     methods: {
@@ -31,10 +34,20 @@ export default {
             this.isLoaded = false
         },
     },
+    computed: {
+        searchUser() {
+            return this.posts.filter((e) => e.profile_name.includes(this.searched));
+        },
+    },
     mounted() {
         setTimeout(this.loaderSpin, 2000);
+        EventBus.$on('search from username', (data) => {
+            this.searched = data;
+        });
         axios.get('https://flynn.boolean.careers/exercises/api/boolgram/posts')
-            .then((res) => this.posts = res.data);
+        .then((res) => {
+            this.posts = res.data;
+        });
         axios.get('https://flynn.boolean.careers/exercises/api/boolgram/profiles')
             .then((res) => this.profiles = res.data)
             .catch((e) => console.log(e));

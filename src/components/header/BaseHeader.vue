@@ -15,7 +15,7 @@ import SearchBar from './SearchBar.vue';
 
     export default {
     name: "BaseHeader",
-    components: { LogoApp, SearchBar, NavBar }
+    components: { LogoApp, SearchBar, NavBar },
 }
 </script>
 <style lang="scss" scoped>

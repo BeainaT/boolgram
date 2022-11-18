@@ -10,7 +10,7 @@
         </div>
         <div class="post_bottom d-flex p-2">
             <div class="post_bottom_left flex-grow-1">
-                <i class="fa-regular fa-heart"></i>
+                <i class="fa-solid fa-heart" :class="isLiked ? 'liked' : ''" @click="toggleLike(isLiked)"></i>
                 <i class="fa-regular fa-comment"></i>
                 <i class="fa-solid fa-location-arrow"></i>
             </div>
@@ -19,13 +19,17 @@
             </div>
         </div>
         <div class="post_reaction px-3 py-2">
-            <img class="rounded-circle" :src="posts.likes[posts.likes.length - 1].profile_picture"
-                :alt="posts.likes[posts.likes.length - 1].username" />
+            <img class="rounded-circle" :src="!isLiked ? posts.likes[posts.likes.length - 1].profile_picture : accountOwner.ownerImg"
+                alt="last user liked post avatar" />
             <template v-if="posts.likes.length > 2">
-                <span>
-                    Piace a
-                    <strong>{{ posts.likes[posts.likes.length - 1].username }}</strong> e
-                    <strong>altre {{ posts.likes.length }}</strong> persone</span>
+                <template v-if="isLiked">
+                    <span> Piace a <strong>{{ accountOwner.ownerName }}</strong> e
+                    <strong>altre {{ posts.likes.length + 1 }}</strong> persone</span>
+                </template>
+                <template v-else>
+                    <span> Piace a <strong>{{ posts.likes[posts.likes.length - 1].username }}</strong> e
+                    <strong>altre {{ posts.likes.length }}</strong> persone</span>                       
+                </template>
             </template>
             <template v-else-if="posts.likes.length <= 2">
                 <span>
@@ -33,7 +37,6 @@
                     <strong>{{ posts.likes[posts.likes.length - 1].username }}</strong> e
                     <strong>{{ posts.likes.length }} altra </strong> persona</span>
             </template>
-            <br />
         </div>
         <div class="px-3 pb-2">
             <strong>{{ posts.profile_name }}</strong> {{ posts.post_text }}
@@ -61,6 +64,7 @@
     </div>
 </template>
 <script>
+
 export default {
     name: "PostBlock",
     props: {
@@ -70,6 +74,11 @@ export default {
         return {
             filtered: [...this.posts.comments],
             showComments: false,
+            isLiked: false,
+            accountOwner: {
+                ownerName: 'Mario Rossi',
+                ownerImg: require('../../assets/img/profile.jpg')
+            }
         };
     },
     methods: {
@@ -78,6 +87,9 @@ export default {
         },
         toggleShow() {
             this.showComments = !this.showComments;
+        },
+        toggleLike() {
+           this.isLiked = !this.isLiked
         },
         isShowBtn(length) {
             let showBtn;
