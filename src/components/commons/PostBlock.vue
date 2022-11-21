@@ -80,7 +80,8 @@ export default {
             },
             commentData: {
                 text: '',
-                count: 0
+                count: 0,
+                username: 'mariorossi'
             },
             sentComments: [],
         }
