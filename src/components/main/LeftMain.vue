@@ -26,7 +26,6 @@ export default {
             profiles: null,
             isLoaded: true,
             searched: '',
-            owner: {}
         }
     },
     methods: {
@@ -36,7 +35,7 @@ export default {
     },
     computed: {
         searchUser() {
-            return this.posts.filter((e) => e.profile_name.includes(this.searched));
+            return this.posts.filter((e) => e.profile_name.toLowerCase().includes(this.searched.toLowerCase()));
         },
     },
     mounted() {

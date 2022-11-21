@@ -21,32 +21,33 @@
         <div class="post_reaction px-3 py-2">
             <img class="rounded-circle" :src="!isLiked ? posts.likes[posts.likes.length - 1].profile_picture : accountOwner.ownerImg"
                 alt="last user liked post avatar" />
-            <template v-if="posts.likes.length > 2">
-                <template v-if="isLiked">
+            <template v-if="isLiked">
+                <template v-if="posts.likes.length >= 2">
                     <span> Piace a <strong>{{ accountOwner.ownerName }}</strong> e
                     <strong>altre {{ posts.likes.length + 1 }}</strong> persone</span>
                 </template>
                 <template v-else>
-                    <span> Piace a <strong>{{ posts.likes[posts.likes.length - 1].username }}</strong> e
-                    <strong>altre {{ posts.likes.length }}</strong> persone</span>                       
+                    <span>Piace a <strong>{{ posts.likes[posts.likes.length - 1].username }}</strong> e
+                    <strong>{{ posts.likes.length }} altra </strong> persona</span>
                 </template>
             </template>
-            <template v-else-if="posts.likes.length <= 2">
-                <span>
-                    Piace a
-                    <strong>{{ posts.likes[posts.likes.length - 1].username }}</strong> e
-                    <strong>{{ posts.likes.length }} altra </strong> persona</span>
+            <template v-else>
+                <span> Piace a <strong>{{ posts.likes[posts.likes.length - 1].username }}</strong> e
+                <strong>altre {{ posts.likes.length }}</strong> persone</span>                       
             </template>
         </div>
         <div class="px-3 pb-2">
             <strong>{{ posts.profile_name }}</strong> {{ posts.post_text }}
             <br />
             <button class="btn_comments btn p-0" @click="toggleShow()">
-                <strong>{{ isShowBtn(posts.comments.length) }}</strong>
+                <strong>{{ isShowBtn(posts.comments.length + commentData.count) }}</strong>
             </button>
             <template v-if="showComments">
                 <div v-for="comment in posts.comments" :key="comment.id">
                     <strong>{{ comment.username }}</strong> {{ comment.text }}
+                </div>
+                <div v-for="comment in sentComments" :key="comment.id">
+                    <strong>{{accountOwner.ownerName}}</strong> {{comment}}
                 </div>
             </template>
             <template v-else>
@@ -54,12 +55,11 @@
                     <strong>{{ comment.username }}</strong> {{ comment.text }}
                 </div>
             </template>
-            <div></div>
         </div>
         <div class="post_comment">
             <i class="fa-regular fa-smile"></i>
-            <input type="text" placeholder="Aggiungi un commento..." />
-            <button class="btn">Pubblica</button>
+            <input type="text" placeholder="Aggiungi un commento..." v-model="commentData.text"/>
+            <button class="btn" @click="addComment()">Pubblica</button>
         </div>
     </div>
 </template>
@@ -72,19 +72,20 @@ export default {
     },
     data() {
         return {
-            filtered: [...this.posts.comments],
             showComments: false,
             isLiked: false,
             accountOwner: {
-                ownerName: 'Mario Rossi',
+                ownerName: 'mariorossi',
                 ownerImg: require('../../assets/img/profile.jpg')
-            }
-        };
+            },
+            commentData: {
+                text: '',
+                count: 0
+            },
+            sentComments: [],
+        }
     },
     methods: {
-        filteredComments() {
-            return this.filtered.splice(0, 3);
-        },
         toggleShow() {
             this.showComments = !this.showComments;
         },
@@ -104,12 +105,19 @@ export default {
             }
             return showBtn;
         },
+        addComment() {
+            this.sentComments.push(this.commentData.text);
+            this.commentData.count++;
+            return this.commentData.text = '';
+        },
     },
     computed: {
         firstComments() {
-            return this.posts.comments.length > 3
-                ? this.filteredComments()
-                : this.posts.comments;
+            let filteredComments = this.posts.comments.filter((el, i) => i < 3);
+            if(filteredComments.length <= 3) {
+                filteredComments.push(this.sentComments)
+            }
+            return filteredComments;
         },
     },
 };
